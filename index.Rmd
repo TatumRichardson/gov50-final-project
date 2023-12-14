@@ -7,9 +7,9 @@ output:
     self_contained: false
 ---
 
-##Introduction
+## Introduction
 
-Research Question: How does the gender of incarcerated individuals influence their levels of support for controversial political topics, specifically: an assault weapons ban, marijuana legalization, raising the minimum wage, and tightening border security?
+Research Question: How does gender for incarcerated individuals influence their levels of support for controversial policy proposals, specifically: an assault weapons ban, marijuana legalization, raising the minimum wage, and tightening border security?
 
 Hypothesis: 
 Women are hypothesized to show significantly higher levels of support for marijuana legalization, raising the minimum wage, and an assault weapons ban compared to men. Specifically, we predict that women will be less likely to strongly oppose these measures and more likely to strongly support them. Additionally, for the topic of tightening border security, men are hypothesized to show higher levels of support compared to women, who are expected to display lower levels of strong support and higher levels of strong opposition. 
@@ -22,12 +22,13 @@ Alternatively, one factor that is important to consider is that prison facilitie
 
 ## Data Visualization
 
-```{r}
+```{r, echo=FALSE}
+library(tidyverse)
 incarceration <- read.csv("/Users/tatumrichardson/Downloads/Rstudio repositories/gov50 final project/gov50finalproject/final project incarceration/incarcerated_survey_final_project/data/incarcerated_survey_responses-marshallproject_slate-march_2019.csv")
 ```
 
 
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(
     Border_Security_Numeric = case_when(
@@ -40,7 +41,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Marijuana_Legalization_Numeric = case_when(
       stance_on_marijuana_legalization == "Strongly Oppose" ~ 1,
@@ -52,7 +53,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Raise_Min_Wage_Numeric = case_when(
       stance_on_raise_min_wage == "Strongly Oppose" ~ 1,
@@ -64,7 +65,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Assault_Weapons_Ban_Numeric = case_when(
       stance_on_assault_weapons_ban == "Strongly Oppose" ~ 1,
@@ -84,50 +85,50 @@ Here are visualizations of range of support for incarcerated individuals on tigh
 
 While these do not tell us anything about the relationship between the independent and dependent variables posed in the hypothesis, they are very interesting for contextual background on the general opinions of incarcerated individuals on controversial policy topics. Besides an assault weapons ban, which seems to be the most controversial by the somewhat even distribution of the spread of responses, raising minimum wage, legalizing marijuana, and tightening border security all have strong support. This is surprising in that these three categories are spread among political lines; raising minimum wage and legalizing marijuana are Democrat proposals, while tightening border security is more Republican, reflecting a degree of bipartisanship among respondents right off the bat. This is notable context, however I do not integrate this into my final data conclusions.
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 ggplot(incarceration, aes(x = stance_on_tightening_border_security)) +
   geom_bar(width = 0.5, fill = "salmon") +
   labs(
-    title = "Stance on Tightening Border Security",
+    title = "Incarcerated Individuals' Stance on Tightening Border Security",
     x = "Response",
     y = "Count"
   ) +
   scale_x_discrete()
 ```
 
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 ggplot(incarceration, aes(x = stance_on_marijuana_legalization)) +
   geom_bar(width = 0.5, fill = "dark green") +
   labs(
-    title = "Stance on Marijuana Legalization",
+    title = "Incarcerated Individuals' Stance on Marijuana Legalization",
     x = "Response",
     y = "Count"
   ) +
   scale_x_discrete()
 ```
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 ggplot(incarceration, aes(x = stance_on_raise_min_wage)) +
   geom_bar(width = 0.5, fill = "green") +
   labs(
-    title = "Stance on Raising the Minimum Wage",
+    title = "Incarcerated Individuals' Stance on Raising the Minimum Wage",
     x = "Response",
     y = "Count"
   ) +
   scale_x_discrete()
 ```
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 ggplot(incarceration, aes(x = stance_on_assault_weapons_ban)) +
   geom_bar(width = 0.5, fill = "orange") +
   labs(
-    title = "Stance on an Assault Weapons Ban",
+    title = "Incarcerated Individuals' Stance on an Assault Weapons Ban",
     x = "Response",
     y = "Count"
   ) +
@@ -140,7 +141,7 @@ ggplot(incarceration, aes(x = stance_on_assault_weapons_ban)) +
 How does gender affect respondents stances on assault weapons bans, marijuana legalization, tightening border security, and raising minimum wage?
 
 
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(
     Gender = case_when(
@@ -151,13 +152,13 @@ incarceration <- incarceration |>
   )
 
 ```
-```{r}
+```{r, echo=FALSE}
 library(ggplot2)
 
 ggplot(incarceration, aes(x = factor(Gender), fill = factor(Gender))) +
   geom_bar() +
   labs(
-    title = "Count of Men and Women in the Data",
+    title = "Gender of Survey Respondents",
     x = "Gender",
     y = "Count"
   ) +
@@ -169,7 +170,7 @@ ggplot(incarceration, aes(x = factor(Gender), fill = factor(Gender))) +
 
 
 
-```{r}
+```{r, echo=FALSE}
 ggplot(incarceration, aes(x = stance_on_assault_weapons_ban, fill = factor(Gender))) +
   geom_bar(position = "dodge", width = 0.7) +
   labs(
@@ -184,7 +185,7 @@ ggplot(incarceration, aes(x = stance_on_assault_weapons_ban, fill = factor(Gende
   theme(axis.text.x = element_text(size = 7.8))  
 
 ```
-```{r}
+```{r, echo=FALSE}
 graph_awb <- incarceration |>
   filter(!is.na(stance_on_assault_weapons_ban)) |>
   group_by(Gender, stance_on_assault_weapons_ban) |>
@@ -210,7 +211,7 @@ ggplot(graph_awb, aes(x = stance_on_assault_weapons_ban, y = percentage, fill = 
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggplot(incarceration, aes(x = stance_on_marijuana_legalization, fill = factor(Gender))) +
   geom_bar(position = "dodge", width = 0.7) +
   labs(
@@ -224,7 +225,7 @@ ggplot(incarceration, aes(x = stance_on_marijuana_legalization, fill = factor(Ge
   theme_minimal(base_family = "Georgia") +
   theme(axis.text.x = element_text(size = 7.8))  
 ```
-```{r}
+```{r, echo=FALSE}
 graph_ml <- incarceration |>
   filter(!is.na(stance_on_marijuana_legalization)) |>
   group_by(Gender, stance_on_marijuana_legalization) |>
@@ -249,7 +250,7 @@ ggplot(graph_ml, aes(x = stance_on_marijuana_legalization, y = percentage, fill 
   theme_minimal(base_family = "Georgia")
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggplot(incarceration, aes(x = stance_on_raise_min_wage, fill = factor(Gender))) +
   geom_bar(position = "dodge", width = 0.7) +
   labs(
@@ -263,7 +264,7 @@ ggplot(incarceration, aes(x = stance_on_raise_min_wage, fill = factor(Gender))) 
   theme_minimal(base_family = "Georgia") +
   theme(axis.text.x = element_text(size = 7.8))  
 ```
-```{r}
+```{r, echo=FALSE}
 graph_mw <- incarceration |>
   filter(!is.na(stance_on_raise_min_wage)) |>
   group_by(Gender, stance_on_raise_min_wage) |>
@@ -288,7 +289,7 @@ ggplot(graph_mw, aes(x = stance_on_raise_min_wage, y = percentage, fill = Gender
   theme_minimal(base_family = "Georgia")
 ```
 
-```{r}
+```{r, echo=FALSE}
 ggplot(incarceration, aes(x = stance_on_tightening_border_security, fill = factor(Gender))) +
   geom_bar(position = "dodge", width = 0.7) +
   labs(
@@ -303,7 +304,7 @@ ggplot(incarceration, aes(x = stance_on_tightening_border_security, fill = facto
   theme(axis.text.x = element_text(size = 7.8))  
 ```
 
-```{r}
+```{r, echo=FALSE}
 graph_bs <- incarceration |>
   filter(!is.na(stance_on_tightening_border_security)) |>
   group_by(Gender, stance_on_tightening_border_security) |>
@@ -327,7 +328,7 @@ ggplot(graph_bs, aes(x = stance_on_tightening_border_security, y = percentage, f
   scale_fill_manual(values = color_mapping) +
   theme_minimal(base_family = "Georgia")
 ```
-##Data Interpretation and Analysis
+## Data Interpretation and Analysis
 
 These graphs provide visual representations for the stances on all 4 proposed policy actions, organized by the gender of the respondents. For each policy action, I've included two graphs: one that shows the survey responses of men, women, and "other" by count, and one that shows what percentage of each gender category answered in what way to each policy proposal. 
 
@@ -338,7 +339,7 @@ These graphs indicate that there are significantly fewer women represented in th
 ## Regression And Analysis
 
 
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(
     Border_Security_Numeric = case_when(
@@ -351,7 +352,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Marijuana_Legalization_Numeric = case_when(
       stance_on_marijuana_legalization == "Strongly Oppose" ~ 1,
@@ -363,7 +364,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Raise_Min_Wage_Numeric = case_when(
       stance_on_raise_min_wage == "Strongly Oppose" ~ 1,
@@ -375,7 +376,7 @@ incarceration <- incarceration |>
     )
   )
 ```
-```{r}
+```{r, echo=FALSE}
 incarceration <- incarceration |>
   mutate(Assault_Weapons_Ban_Numeric = case_when(
       stance_on_assault_weapons_ban == "Strongly Oppose" ~ 1,
@@ -388,19 +389,19 @@ incarceration <- incarceration |>
   )
 ```
 
-```{r}
+```{r, echo=FALSE}
 model_border_security <-lm(Border_Security_Numeric ~ Gender, data = incarceration)
 summary(model_border_security)
 ```
-```{r}
+```{r, echo=FALSE}
 model_marijuana_legalization <-lm(Marijuana_Legalization_Numeric ~ Gender, data = incarceration)
 summary(model_marijuana_legalization)
 ```
-```{r}
+```{r, echo=FALSE}
 model_raise_min_wage <-lm(Raise_Min_Wage_Numeric ~ Gender, data = incarceration)
 summary(model_raise_min_wage)
 ```
-```{r}
+```{r, echo=FALSE}
 model_assault_weapons_ban <-lm(Assault_Weapons_Ban_Numeric ~ Gender, data = incarceration)
 summary(model_assault_weapons_ban)
 ```
