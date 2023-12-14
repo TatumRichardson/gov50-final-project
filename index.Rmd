@@ -7,8 +7,412 @@ output:
     self_contained: false
 ---
 
+##Introduction
+
+Research Question: How does the gender of incarcerated individuals influence their levels of support for controversial political topics, specifically: an assault weapons ban, marijuana legalization, raising the minimum wage, and tightening border security?
+
+Hypothesis: 
+Women are hypothesized to show significantly higher levels of support for marijuana legalization, raising the minimum wage, and an assault weapons ban compared to men. Specifically, we predict that women will be less likely to strongly oppose these measures and more likely to strongly support them. Additionally, for the topic of tightening border security, men are hypothesized to show higher levels of support compared to women, who are expected to display lower levels of strong support and higher levels of strong opposition. 
+
+This topic is interesting because while political differences between men and women are well-documented, this data set measures opinions for individuals for whom typical gender indicators do not completely apply. That is, there are gender differentials in society which reflect on political opinions, such as different concentrations of men and women in varying occupations, different levels of closeness to family, and different levels of exposure to crime, guns, and security based on gendered positions within society. However, this data presupposes that these individuals are removed from society by nature of their incarceration and have had some above-average level of exposure to crime. Thus, while gender differentials in society may have applied pre-incarceration, they may apply less strongly to individuals when they are incarcerated.
+
+It is also important because there are many stereotypes when it comes to incarcerated individuals; namely, that they would have more support for policies which de-criminalize any activity (including marijuana, the use of assault weapons, or  illegal immigration). Stereotyping may be even more true for incarcerated women, who are stigmatized more strongly due to patriarchal expectations for women to be pacifists, rule-followers, and non-criminals. In other words, women are criminalized less frequently then men, so the political opinions of incarcerated women are severely under-represented in any kind of media or political analysis. This data is representative of their true political opinions, which would hopefully overcome stereotypes. 
+
+Alternatively, one factor that is important to consider is that prison facilities segregate by gender; that is, women interact with women and men only interact with men. This is not true (for the most part) in normal society. This may affect individuals' responses. 
+
+## Data Visualization
+
+```{r}
+incarceration <- read.csv("/Users/tatumrichardson/Downloads/Rstudio repositories/gov50 final project/gov50finalproject/final project incarceration/incarcerated_survey_final_project/data/incarcerated_survey_responses-marshallproject_slate-march_2019.csv")
+```
 
 
-## Project thoughts
+```{r}
+incarceration <- incarceration |>
+  mutate(
+    Border_Security_Numeric = case_when(
+      stance_on_tightening_border_security == "Strongly Oppose" ~ 1,
+      stance_on_tightening_border_security == "Oppose" ~ 2,
+      stance_on_tightening_border_security == "Undecided" ~ 3,
+      stance_on_tightening_border_security == "Support" ~ 4,
+      stance_on_tightening_border_security == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Marijuana_Legalization_Numeric = case_when(
+      stance_on_marijuana_legalization == "Strongly Oppose" ~ 1,
+      stance_on_marijuana_legalization == "Oppose" ~ 2,
+      stance_on_marijuana_legalization == "Undecided" ~ 3,
+      stance_on_marijuana_legalization == "Support" ~ 4,
+      stance_on_marijuana_legalization == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Raise_Min_Wage_Numeric = case_when(
+      stance_on_raise_min_wage == "Strongly Oppose" ~ 1,
+      stance_on_raise_min_wage == "Oppose" ~ 2,
+      stance_on_raise_min_wage == "Undecided" ~ 3,
+      stance_on_raise_min_wage == "Support" ~ 4,
+      stance_on_raise_min_wage == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Assault_Weapons_Ban_Numeric = case_when(
+      stance_on_assault_weapons_ban == "Strongly Oppose" ~ 1,
+      stance_on_assault_weapons_ban == "Oppose" ~ 2,
+      stance_on_assault_weapons_ban == "Undecided" ~ 3,
+      stance_on_assault_weapons_ban == "Support" ~ 4,
+      stance_on_assault_weapons_ban == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
 
-I am interested in exploring data about the relationship between conflict and poverty in Africa or Latin America. 
+
+## Stances of Incarcerated Individuals on Controversial Policy Proposals  - Dependent Variable
+
+Here are visualizations of range of support for incarcerated individuals on tightening border security, legalizing marijuana, raising the minimum wage, and banning assault weapons. 
+
+While these do not tell us anything about the relationship between the independent and dependent variables posed in the hypothesis, they are very interesting for contextual background on the general opinions of incarcerated individuals on controversial policy topics. Besides an assault weapons ban, which seems to be the most controversial by the somewhat even distribution of the spread of responses, raising minimum wage, legalizing marijuana, and tightening border security all have strong support. This is surprising in that these three categories are spread among political lines; raising minimum wage and legalizing marijuana are Democrat proposals, while tightening border security is more Republican, reflecting a degree of bipartisanship among respondents right off the bat. This is notable context, however I do not integrate this into my final data conclusions.
+
+```{r}
+library(ggplot2)
+
+ggplot(incarceration, aes(x = stance_on_tightening_border_security)) +
+  geom_bar(width = 0.5, fill = "salmon") +
+  labs(
+    title = "Stance on Tightening Border Security",
+    x = "Response",
+    y = "Count"
+  ) +
+  scale_x_discrete()
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(incarceration, aes(x = stance_on_marijuana_legalization)) +
+  geom_bar(width = 0.5, fill = "dark green") +
+  labs(
+    title = "Stance on Marijuana Legalization",
+    x = "Response",
+    y = "Count"
+  ) +
+  scale_x_discrete()
+```
+```{r}
+library(ggplot2)
+
+ggplot(incarceration, aes(x = stance_on_raise_min_wage)) +
+  geom_bar(width = 0.5, fill = "green") +
+  labs(
+    title = "Stance on Raising the Minimum Wage",
+    x = "Response",
+    y = "Count"
+  ) +
+  scale_x_discrete()
+```
+```{r}
+library(ggplot2)
+
+ggplot(incarceration, aes(x = stance_on_assault_weapons_ban)) +
+  geom_bar(width = 0.5, fill = "orange") +
+  labs(
+    title = "Stance on an Assault Weapons Ban",
+    x = "Response",
+    y = "Count"
+  ) +
+  scale_x_discrete()
+```
+
+
+## Data Visualization: Comparing Independent and Dependent Variables
+
+How does gender affect respondents stances on assault weapons bans, marijuana legalization, tightening border security, and raising minimum wage?
+
+
+```{r}
+incarceration <- incarceration |>
+  mutate(
+    Gender = case_when(
+      identifies_as_man == 1 ~ "Man",
+      identifies_as_woman == 1 ~ "Woman",
+      TRUE ~ "Other"
+    )
+  )
+
+```
+```{r}
+library(ggplot2)
+
+ggplot(incarceration, aes(x = factor(Gender), fill = factor(Gender))) +
+  geom_bar() +
+  labs(
+    title = "Count of Men and Women in the Data",
+    x = "Gender",
+    y = "Count"
+  ) +
+  scale_x_discrete() +
+  scale_fill_manual(values = c("Man" = "blue", "Other" = "gray", "Woman" = "pink")) +
+  theme_minimal(base_family = "Georgia") +
+  theme(axis.text.x = element_text(size = 9.5))
+```
+
+
+
+```{r}
+ggplot(incarceration, aes(x = stance_on_assault_weapons_ban, fill = factor(Gender))) +
+  geom_bar(position = "dodge", width = 0.7) +
+  labs(
+    title = "Stance on Assault Weapons Ban by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Count", 
+    fill = "Gender"
+  ) +
+  scale_x_discrete(labels = c("Oppose", "Strongly Oppose", "Strongly Support", "Support", "Undecided", "NA")) +
+  scale_fill_manual(values = c("Man" = "blue", "Woman" = "pink", "Other" = "gray")) +
+  theme_minimal(base_family = "Georgia") +
+  theme(axis.text.x = element_text(size = 7.8))  
+
+```
+```{r}
+graph_awb <- incarceration |>
+  filter(!is.na(stance_on_assault_weapons_ban)) |>
+  group_by(Gender, stance_on_assault_weapons_ban) |>
+  summarize(count = n()) |>
+  group_by(Gender) |>
+  mutate(total = sum(count),
+         percentage = count / total * 100)
+
+color_mapping <- c("Man" = "blue", "Woman" = "pink", "Other" = "gray")
+
+ggplot(graph_awb, aes(x = stance_on_assault_weapons_ban, y = percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "fill", width = 0.7) +  
+  labs(
+    title = "Stance on Assault Weapons Ban by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Percentage",
+    fill = "Gender"
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(values = color_mapping) +
+  theme_minimal(base_family = "Georgia")
+
+```
+
+```{r}
+ggplot(incarceration, aes(x = stance_on_marijuana_legalization, fill = factor(Gender))) +
+  geom_bar(position = "dodge", width = 0.7) +
+  labs(
+    title = "Stance on Marijuana Legalization by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Count", 
+    fill = "Gender"
+  ) +
+  scale_x_discrete(labels = c("Oppose", "Strongly Oppose", "Strongly Support", "Support", "Undecided", "NA")) +
+  scale_fill_manual(values = c("Man" = "blue", "Woman" = "pink", "Other" = "gray")) +
+  theme_minimal(base_family = "Georgia") +
+  theme(axis.text.x = element_text(size = 7.8))  
+```
+```{r}
+graph_ml <- incarceration |>
+  filter(!is.na(stance_on_marijuana_legalization)) |>
+  group_by(Gender, stance_on_marijuana_legalization) |>
+  summarize(count = n()) |>
+  group_by(Gender) |>
+  mutate(total = sum(count),
+         percentage = count / total * 100)
+
+color_mapping <- c("Man" = "blue", "Woman" = "pink", "Other" = "gray")
+
+ggplot(graph_ml, aes(x = stance_on_marijuana_legalization, y = percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "fill", width = 0.7) +  
+  labs(
+    title = "Stance on Marijuana Legalization by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Percentage",
+    fill = "Gender"
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(values = color_mapping) +
+  theme_minimal(base_family = "Georgia")
+```
+
+```{r}
+ggplot(incarceration, aes(x = stance_on_raise_min_wage, fill = factor(Gender))) +
+  geom_bar(position = "dodge", width = 0.7) +
+  labs(
+    title = "Stance on Raising the Minimum Wage by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Count", 
+    fill = "Gender"
+  ) +
+  scale_x_discrete(labels = c("Oppose", "Strongly Oppose", "Strongly Support", "Support", "Undecided", "NA")) +
+  scale_fill_manual(values = c("Man" = "blue", "Woman" = "pink", "Other" = "gray")) +
+  theme_minimal(base_family = "Georgia") +
+  theme(axis.text.x = element_text(size = 7.8))  
+```
+```{r}
+graph_mw <- incarceration |>
+  filter(!is.na(stance_on_raise_min_wage)) |>
+  group_by(Gender, stance_on_raise_min_wage) |>
+  summarize(count = n()) |>
+  group_by(Gender) |>
+  mutate(total = sum(count),
+         percentage = count / total * 100)
+
+color_mapping <- c("Man" = "blue", "Woman" = "pink", "Other" = "gray")
+
+ggplot(graph_mw, aes(x = stance_on_raise_min_wage, y = percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "fill", width = 0.7) +  
+  labs(
+    title = "Stance on Raising Minimum Wage by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Percentage",
+    fill = "Gender"
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(values = color_mapping) +
+  theme_minimal(base_family = "Georgia")
+```
+
+```{r}
+ggplot(incarceration, aes(x = stance_on_tightening_border_security, fill = factor(Gender))) +
+  geom_bar(position = "dodge", width = 0.7) +
+  labs(
+    title = "Stance on Tightening Border Security by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Count", 
+    fill = "Gender"
+  ) +
+  scale_x_discrete(labels = c("Oppose", "Strongly Oppose", "Strongly Support", "Support", "Undecided", "NA")) +
+  scale_fill_manual(values = c("Man" = "blue", "Woman" = "pink", "Other" = "gray")) +
+  theme_minimal(base_family = "Georgia") +
+  theme(axis.text.x = element_text(size = 7.8))  
+```
+
+```{r}
+graph_bs <- incarceration |>
+  filter(!is.na(stance_on_tightening_border_security)) |>
+  group_by(Gender, stance_on_tightening_border_security) |>
+  summarize(count = n()) |>
+  group_by(Gender) |>
+  mutate(total = sum(count),
+         percentage = count / total * 100)
+
+color_mapping <- c("Man" = "blue", "Woman" = "pink", "Other" = "gray")
+
+ggplot(graph_bs, aes(x = stance_on_tightening_border_security, y = percentage, fill = Gender)) +
+  geom_bar(stat = "identity", position = "fill", width = 0.7) +  
+  labs(
+    title = "Stance on Tightening Border Security by Gender of Incarcerated Individuals",
+    x = "Response",
+    y = "Percentage",
+    fill = "Gender"
+  ) +
+  scale_x_discrete() +
+  scale_y_continuous(labels = scales::percent_format(scale = 1)) +
+  scale_fill_manual(values = color_mapping) +
+  theme_minimal(base_family = "Georgia")
+```
+##Data Interpretation and Analysis
+
+These graphs provide visual representations for the stances on all 4 proposed policy actions, organized by the gender of the respondents. For each policy action, I've included two graphs: one that shows the survey responses of men, women, and "other" by count, and one that shows what percentage of each gender category answered in what way to each policy proposal. 
+
+The data source is from the Marshall Project, which carries out a survey through collaboration with tablet companies in some facilities, as well as in paper form through the Marshall Project's print publication. Paper questionnaires are mailed in by respondents. Responses were collected on a rolling basis over several months, and this data includes over 8,000 survey responses collected by March of 2020. The independent variable I've taken into account is gender. The survey asked when a respondent identified as a man (TRUE or FALSE) or identified as a woman (TRUE or FALSE). If a respondent wrote false for both, or true for both, or declined to answer, they were put into the category of "other." The dependent variable(s) I've chosen are about an individual's stance on four controversial political topics. The questions were posed as "Please indicate how you feel about the following policy: tightening border security," with answers available from strongly oppose, oppose, undecided, support, and strongly support. 
+
+These graphs indicate that there are significantly fewer women represented in the data. The percentage graphs show the percentage of female, male, or "other" respondents on a given question who fall into each category. I included these to grant a more representative view of attitudes within each gender category, in a way that befits my attempt to identify a causal analysis between gender and political opinions. However, the graphs which measure "count" on the y-axis are also interesting, as they grant a very clear representation of how many men, women, and "other" responded in a given way to each question posed. In this way, those graphs are very representative of the actual data set. 
+
+## Regression And Analysis
+
+
+```{r}
+incarceration <- incarceration |>
+  mutate(
+    Border_Security_Numeric = case_when(
+      stance_on_tightening_border_security == "Strongly Oppose" ~ 1,
+      stance_on_tightening_border_security == "Oppose" ~ 2,
+      stance_on_tightening_border_security == "Undecided" ~ 3,
+      stance_on_tightening_border_security == "Support" ~ 4,
+      stance_on_tightening_border_security == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Marijuana_Legalization_Numeric = case_when(
+      stance_on_marijuana_legalization == "Strongly Oppose" ~ 1,
+      stance_on_marijuana_legalization == "Oppose" ~ 2,
+      stance_on_marijuana_legalization == "Undecided" ~ 3,
+      stance_on_marijuana_legalization == "Support" ~ 4,
+      stance_on_marijuana_legalization == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Raise_Min_Wage_Numeric = case_when(
+      stance_on_raise_min_wage == "Strongly Oppose" ~ 1,
+      stance_on_raise_min_wage == "Oppose" ~ 2,
+      stance_on_raise_min_wage == "Undecided" ~ 3,
+      stance_on_raise_min_wage == "Support" ~ 4,
+      stance_on_raise_min_wage == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+```{r}
+incarceration <- incarceration |>
+  mutate(Assault_Weapons_Ban_Numeric = case_when(
+      stance_on_assault_weapons_ban == "Strongly Oppose" ~ 1,
+      stance_on_assault_weapons_ban == "Oppose" ~ 2,
+      stance_on_assault_weapons_ban == "Undecided" ~ 3,
+      stance_on_assault_weapons_ban == "Support" ~ 4,
+      stance_on_assault_weapons_ban == "Strongly Support" ~ 5,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+
+```{r}
+model_border_security <-lm(Border_Security_Numeric ~ Gender, data = incarceration)
+summary(model_border_security)
+```
+```{r}
+model_marijuana_legalization <-lm(Marijuana_Legalization_Numeric ~ Gender, data = incarceration)
+summary(model_marijuana_legalization)
+```
+```{r}
+model_raise_min_wage <-lm(Raise_Min_Wage_Numeric ~ Gender, data = incarceration)
+summary(model_raise_min_wage)
+```
+```{r}
+model_assault_weapons_ban <-lm(Assault_Weapons_Ban_Numeric ~ Gender, data = incarceration)
+summary(model_assault_weapons_ban)
+```
+The intercept coefficient represents the estimated value of Border_Security_Numeric, Marijuana_Legalization_Numeric, Raise_Min_Wage_Numeric, and Assault_Weapons_Ban_Numeric respectively when all other predictor variables are zero. However, in this case the variable Gender is binary (Man or Woman), so the interpretation of the intercept does not have a meaningful real world context.The GenderWoman coefficient represents the estimated change in the mean of Border_Security_Numeric, Marijuana_Legalization_Numeric, Raise_Min_Wage_Numeric, and Assault_Weapons_Ban_Numeric respectively for individuals identified as women compared to men. Specifically, when GenderWoman is 1 (indicating the individual is a woman), we would expect an increase of 0.1289 in the predicted value of Border_Security_Numeric compared to when GenderWoman is 0 (indicating the individual is a man).
+
+The coefficients in increasing order, reflecting the order for increasing female support, are for raising the minimum wage, which is -0.3299, Assault Weapons ban, 0.01031, Border Security, 0.1289, and Marijuana Legalization which is 0.5464. This reflects the most support among women for Marijuana Legalization, and the least (averages to opposition for the Assault Weapons Ban.
+
+The P value (Pr(>|t|)) for Border security is 0.81. A high p-value (above 0.05) suggests there is not enough evidence to reject the null hypothesis, which is that the coefficient would be zero. In other terms, we can assume that the estimate is not statistically significant. The P value for Marijuana Legalization is 0.304, Assault Weapons Ban is 0.986, and Minimum Wage is 0.573. These are all very high p values, insinuating that we cannot reject the null hypothesis for any of them. 
+
+
+## Conclusion
+
+Ultimately, the results are statistically insignificant and fail to find a causal relationship between gender and political opinion. The primary coefficients of interest from the regression table do show that incarcerated female respondents, on average, expressed higher support for some policies rather than others. The coefficients in particular represent the effect that being a woman has on their stance on a given subject. The higher the coefficient, the more likely it is that being a woman increased their support for a policy proposal. The categories which garnered the more support according to these 4 coefficients (from most, to least) are Marijuana Legalization, Border Security, and an Assault Weapons Ban. This disproves my earlier hypothesis that women were more likely to strongly oppose border security. Additionally, it disproves the hypothesis that women were likely to strongly support raising the minimum wage. However, the p-values prove that the relationship between gender and political opinion is not causal. We know that all 4 p-values are too high to reject the null hypothesis, which is that there is no effect of gender (specifically, of being a woman) on political opinion. This lack of statistical significance indicates that the coefficient estimates indicate a correlation, rather than a causation, between gender and an individuals stance on any given policy proposal. This concurs with the barplots produced in the data visualization section; there is no clear trend found in the plots, and a relatively even spread of distribution among response categories, which makes it incredibly difficult to measure the effect that being a woman has on an individual's response. 
+
+One threat to inference is the fact that there were significantly fewer female respondents to this survey than male respondents. While this is a fact that is likely indicative of the larger prison population, it is difficult to measure the specific relationship between gender and political opinion without equally representative samples of both genders. Additionally, those who responded in the "other" category were numerous, and although it is statistically likely some of those respondents identify as women in real life, their opinions were discounted from the regression because they chose not to identify as such on the survey. Another confounding variable might be political affiliation, which would strongly influence an individual's opinion on policy proposals, and may also be associated with gender. Another confounding variable would be race. Certain races are disproportionately represented among incarcerated populations, and race (on average) has an influence on people's positions on especially controversial policy proposals. Especially in regards to tightening border security and legalizing marijuana, as deportation and drug arrests disproportionately occur to people of color. Age is another confounding variable; older individuals tend to support more conservative policies than younger individuals, regardless of gender. If I had more time I would run a regression with more variables such as age, political affiliation, time spent incarcerated, and race. If I had more money I would extend the reach of the survey to include more women and as many respondents as possible. 
