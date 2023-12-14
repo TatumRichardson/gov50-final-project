@@ -1,7 +1,7 @@
 ---
 title: "Gov 50 Final Project"
 author: "Tatum Richardson"
-description: "My final project"
+description: "Gender, Incarceration, and Policy Opinions"
 output:
   distill::distill_article:
     self_contained: false
@@ -20,7 +20,7 @@ It is also important because there are many stereotypes when it comes to incarce
 
 Alternatively, one factor that is important to consider is that prison facilities segregate by gender; that is, women interact with women and men only interact with men. This is not true (for the most part) in normal society. This may affect individuals' responses. 
 
-## Data Visualization
+## Data Visualization: Stances of Incarcerated Individuals on Controversial Policy Proposals 
 
 ```{r, echo=FALSE}
 library(tidyverse)
@@ -78,8 +78,6 @@ incarceration <- incarceration |>
   )
 ```
 
-
-## Stances of Incarcerated Individuals on Controversial Policy Proposals  - Dependent Variable
 
 Here are visualizations of range of support for incarcerated individuals on tightening border security, legalizing marijuana, raising the minimum wage, and banning assault weapons. 
 
